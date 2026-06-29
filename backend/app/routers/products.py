@@ -11,15 +11,19 @@ router = APIRouter(tags=["Products"])
     "/products",
     response_model=list[ProductResponse],
     summary="List all products",
-    description="Retrieve all products with their average rating and total review count. Optional `search` query filters by title.",
+    description="Retrieve all products with their average rating and total review count. Optional `search` query filters by title and `min_rating` filters by minimum average rating.",
     response_description="A list of products.",
     responses={404: {"model": ErrorResponse}},
 )
-def get_products(search: str = Query(default=None, description="Search products by title"), db: Session = Depends(get_db)):
+def get_products(search: str = Query(default=None, description="Search products by title"), min_rating: int = Query(default=None, ge=1, le=5, description="Filter products by minimum average rating"), db: Session = Depends(get_db)):
     service = ProductService(db)
     if search and search.strip():
-        return service.search_products(search.strip())
-    return service.get_products()
+        products = service.search_products(search.strip())
+    else:
+        products = service.get_products()
+    if min_rating:
+        products = service.filter_by_rating(min_rating)
+    return products
 
 
 @router.get(

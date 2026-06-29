@@ -3,12 +3,15 @@ import { ProductGrid } from "@/components/ProductGrid";
 import { SearchInput } from "./components/SearchInput";
 
 interface HomeProps {
-  searchParams: Promise<{ search?: string }>;
+  searchParams: Promise<{ search?: string; min_rating?: string }>;
 }
 
-async function getProducts(search?: string) {
+async function getProducts(search?: string, minRating?: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-  const url = search ? `${baseUrl}/products?search=${encodeURIComponent(search)}` : `${baseUrl}/products`;
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (minRating) params.set("min_rating", minRating);
+  const url = params.toString() ? `${baseUrl}/products?${params.toString()}` : `${baseUrl}/products`;
   const response = await fetch(url, { next: { revalidate: 60 } });
   if (!response.ok) {
     throw new Error("Failed to load products");
@@ -18,7 +21,7 @@ async function getProducts(search?: string) {
 
 export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
-  const products = await getProducts(params.search);
+  const products = await getProducts(params.search, params.min_rating);
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -29,7 +32,7 @@ export default async function Home({ searchParams }: HomeProps) {
             <p className="text-gray-600">Discover products and read reviews from the community.</p>
           </div>
           <Suspense fallback={<div className="h-10 w-full max-w-md rounded-lg border border-gray-200 bg-gray-100" />}>
-            <SearchInput initialValue={params.search || ""} />
+            <SearchInput initialValue={params.search || ""} initialMinRating={params.min_rating || ""} />
           </Suspense>
         </div>
         {products.length === 0 ? (
