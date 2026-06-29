@@ -5,12 +5,6 @@ from app.models import Product
 
 
 def seed_products(db: Session):
-    existing = db.query(Product).count()
-    if existing > 0:
-        db.query(Product).delete()
-        db.commit()
-        print(f"Cleared {existing} existing products.")
-
     products = [
         {
             "title": "Wireless Noise-Cancelling Headphones",
@@ -35,22 +29,22 @@ def seed_products(db: Session):
         {
             "title": "Portable SSD 2TB",
             "description": "Compact, rugged, and fast USB 3.2 Gen 2x2 NVMe SSD. Transfer speeds up to 2000MB/s.",
-            "image_url": "https://images.unsplash.com/photo-1562408590-e32931084e23?w=500",
+            "image_url": "https://images.unsplash.com/photo-1597872200967-794b1f10af1c?w=500",
         },
         {
             "title": "Smart Home Speaker",
             "description": "Voice-controlled smart speaker with 360° sound, built-in assistant, and multi-room audio support.",
-            "image_url": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500",
+            "image_url": "https://images.unsplash.com/photo-1543512214-318c77a79917?w=500",
         },
         {
             "title": "4K Webcam with Ring Light",
             "description": "Auto-focus 4K webcam with adjustable brightness ring light and dual noise-cancelling microphones.",
-            "image_url": "https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=500",
+            "image_url": "https://images.unsplash.com/photo-1633279736917-db17a08a6d78?w=500",
         },
         {
             "title": "Laptop Stand Adjustable",
             "description": "Aluminum alloy laptop stand with ergonomic adjustable height. Compatible with 10-17.3 inch laptops.",
-            "image_url": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500",
+            "image_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
         },
     ]
 
