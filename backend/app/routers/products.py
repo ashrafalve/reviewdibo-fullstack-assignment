@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.product_service import ProductService
@@ -11,12 +11,14 @@ router = APIRouter(tags=["Products"])
     "/products",
     response_model=list[ProductResponse],
     summary="List all products",
-    description="Retrieve all products with their average rating and total review count.",
+    description="Retrieve all products with their average rating and total review count. Optional `search` query filters by title.",
     response_description="A list of products.",
     responses={404: {"model": ErrorResponse}},
 )
-def get_products(db: Session = Depends(get_db)):
+def get_products(search: str = Query(default=None, description="Search products by title"), db: Session = Depends(get_db)):
     service = ProductService(db)
+    if search and search.strip():
+        return service.search_products(search.strip())
     return service.get_products()
 
 

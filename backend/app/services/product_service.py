@@ -7,8 +7,7 @@ class ProductService:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_products(self):
-        products = self.db.query(Product).all()
+    def _annotate(self, products):
         result = []
         for p in products:
             avg_rating = self.db.query(func.avg(Review.rating)).filter(Review.product_id == p.id).scalar()
@@ -22,6 +21,14 @@ class ProductService:
                 "review_count": review_count,
             })
         return result
+
+    def get_products(self):
+        products = self.db.query(Product).all()
+        return self._annotate(products)
+
+    def search_products(self, query: str):
+        products = self.db.query(Product).filter(Product.title.ilike(f"%{query}%")).all()
+        return self._annotate(products)
 
     def get_product_by_id(self, product_id: int):
         p = self.db.query(Product).filter(Product.id == product_id).first()
