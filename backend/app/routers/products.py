@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.product_service import ProductService
@@ -13,9 +13,12 @@ router = APIRouter(tags=["Products"])
     summary="List all products",
     description="Retrieve all products with their average rating and total review count. Optional `search` query filters by title and `min_rating` filters by minimum average rating.",
     response_description="A list of products.",
-    responses={404: {"model": ErrorResponse}},
 )
-def get_products(search: str = Query(default=None, description="Search products by title"), min_rating: int = Query(default=None, ge=1, le=5, description="Filter products by minimum average rating"), db: Session = Depends(get_db)):
+def get_products(
+    search: str = Query(default=None, description="Search products by title"),
+    min_rating: int = Query(default=None, ge=1, le=5, description="Filter products by minimum average rating"),
+    db: Session = Depends(get_db),
+):
     service = ProductService(db)
     if search and search.strip():
         products = service.search_products(search.strip())
@@ -38,6 +41,5 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     service = ProductService(db)
     product = service.get_product_by_id(product_id)
     if not product:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Product not found")
     return product

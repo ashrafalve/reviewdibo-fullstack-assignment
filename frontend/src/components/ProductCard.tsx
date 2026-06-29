@@ -1,22 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Product } from "@/types";
 import { StarRating } from "@/components/StarRating";
 
 interface ProductCardProps {
   product: Product;
   href: string;
+  priority?: boolean;
 }
 
-export function ProductCard({ product, href }: ProductCardProps) {
+export function ProductCard({ product, href, priority = false }: ProductCardProps) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+    <div className="group flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
       <div className="relative h-48 w-full overflow-hidden bg-gray-100">
         {product.image_url ? (
-          <img
+          <Image
             src={product.image_url}
             alt={product.title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            loading="lazy"
+            fill
+            priority={priority}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
@@ -31,8 +35,8 @@ export function ProductCard({ product, href }: ProductCardProps) {
         )}
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="line-clamp-1 text-lg font-semibold text-gray-900">{product.title}</h3>
-        <p className="mt-2 line-clamp-2 flex-1 text-sm text-gray-600">{product.description}</p>
+        <h3 className="line-clamp-1 text-base font-semibold text-gray-900">{product.title}</h3>
+        <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-gray-500">{product.description}</p>
         <div className="mt-4 flex items-center justify-between">
           <div className="flex flex-col gap-1">
             {product.average_rating !== null && product.average_rating > 0 ? (
@@ -43,11 +47,11 @@ export function ProductCard({ product, href }: ProductCardProps) {
             ) : (
               <span className="text-sm text-gray-400">No ratings yet</span>
             )}
-            <span className="text-xs text-gray-500">{product.review_count} review{product.review_count === 1 ? '' : 's'}</span>
+            <span className="text-xs text-gray-400">{product.review_count} review{product.review_count === 1 ? '' : 's'}</span>
           </div>
           <Link
             href={href}
-            className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Details
           </Link>

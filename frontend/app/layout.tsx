@@ -29,13 +29,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-gray-50 text-gray-900" suppressHydrationWarning>
         <header className="border-b border-gray-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-            <Link href="/" className="text-xl font-bold tracking-tight text-blue-600">Reviewdibo</Link>
+            <Link href="/" className="text-lg font-semibold tracking-normal text-blue-700">Reviewdibo</Link>
           </div>
         </header>
         {children}
         <footer className="border-t border-gray-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-gray-500 sm:px-6 lg:px-8">
-            © {new Date().getFullYear()} Reviewdibo. All rights reserved.
+          <div className="mx-auto max-w-7xl px-4 py-5 text-center text-xs text-gray-400 sm:px-6 lg:px-8">
+            &copy; {new Date().getFullYear()} Reviewdibo
           </div>
         </footer>
       </body>

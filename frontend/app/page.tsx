@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
-import { SearchInput } from "./components/SearchInput";
+import { SearchInput } from "@/components/SearchInput";
+import type { Product } from "@/types";
 
 interface HomeProps {
   searchParams: Promise<{ search?: string; min_rating?: string }>;
@@ -16,7 +17,7 @@ async function getProducts(search?: string, minRating?: string) {
   if (!response.ok) {
     throw new Error("Failed to load products");
   }
-  return response.json();
+  return response.json() as Promise<Product[]>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
@@ -28,15 +29,15 @@ export default async function Home({ searchParams }: HomeProps) {
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Browse Products</h1>
-            <p className="text-gray-600">Discover products and read reviews from the community.</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Products</h1>
+            <p className="text-sm text-gray-500">Discover and review products from the community.</p>
           </div>
-          <Suspense fallback={<div className="h-10 w-full max-w-md rounded-lg border border-gray-200 bg-gray-100" />}>
-            <SearchInput initialValue={params.search || ""} initialMinRating={params.min_rating || ""} />
+          <Suspense fallback={<div className="h-10 w-full max-w-md rounded-md border border-gray-200 bg-gray-100" />}>
+            <SearchInput />
           </Suspense>
         </div>
         {products.length === 0 ? (
-          <p className="text-center text-gray-500">No products found.</p>
+          <p className="text-center text-sm text-gray-400">No products found.</p>
         ) : (
           <ProductGrid products={products} />
         )}
