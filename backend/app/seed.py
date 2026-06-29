@@ -9,15 +9,15 @@ def seed_products(db: Session):
         {
             "title": "Wireless Noise-Cancelling Headphones",
             "description": "Premium over-ear headphones with active noise cancellation, 30-hour battery life, and Hi-Res Audio support.",
-            "image_url": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500",
+            "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
         },
         {
             "title": "Mechanical Keyboard RGB",
             "description": "Compact 75% mechanical keyboard with hot-swappable switches, PBT keycaps, and per-key RGB backlighting.",
-            "image_url": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500",
+            "image_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
         },
         {
-            "title": "Ultra-Wide 34\" Curved Monitor",
+            "title": 'Ultra-Wide 34" Curved Monitor',
             "description": "3440x1440 QHD curved display, 144Hz refresh rate, 1ms response, USB-C with 90W power delivery.",
             "image_url": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500",
         },
@@ -29,7 +29,7 @@ def seed_products(db: Session):
         {
             "title": "Portable SSD 2TB",
             "description": "Compact, rugged, and fast USB 3.2 Gen 2x2 NVMe SSD. Transfer speeds up to 2000MB/s.",
-            "image_url": "https://images.unsplash.com/photo-1613928416375-1a33c763a43c?w=500",
+            "image_url": "https://images.unsplash.com/photo-1597872200967-794b1f10af1c?w=500",
         },
         {
             "title": "Smart Home Speaker",
@@ -43,7 +43,7 @@ def seed_products(db: Session):
         },
         {
             "title": "Laptop Stand Adjustable",
-            "description": "Aluminum alloy laptop stand with ergonomic adjustable height. Compatible with 10-17.3\" laptops.",
+            "description": "Aluminum alloy laptop stand with ergonomic adjustable height. Compatible with 10-17.3 inch laptops.",
             "image_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
         },
     ]

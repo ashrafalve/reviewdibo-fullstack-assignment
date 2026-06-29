@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { api } from "@/lib/api";
 import { ProductDetail } from "@/types";
 import { StarRating } from "@/components/StarRating";
@@ -65,7 +64,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
         <div className="relative h-64 w-full bg-gray-100 sm:h-80">
           {product.image_url ? (
-            <Image src={product.image_url} alt={product.title} fill className="object-cover" sizes="100vw" />
+            <img
+              src={product.image_url}
+              alt={product.title}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-gray-400">No image</div>
           )}
