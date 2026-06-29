@@ -19,6 +19,7 @@ interface ReviewFormProps {
 export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const {
     register,
@@ -42,6 +43,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
   const onSubmit = async (data: ReviewFormInputs) => {
     setLoading(true);
     setServerError(null);
+    setSuccess(false);
     try {
       await api.post("/reviews", {
         user_name: data.user_name,
@@ -51,6 +53,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
         comment: data.comment,
       });
       reset();
+      setSuccess(true);
       onSuccess();
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Failed to submit review");
@@ -62,6 +65,11 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rounded-xl border border-gray-200 bg-white p-6">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">Write a Review</h3>
+      {success && (
+        <div className="mb-4 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700">
+          Review submitted successfully! Thank you for your feedback.
+        </div>
+      )}
       {serverError && <p className="mb-4 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-600">{serverError}</p>}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
