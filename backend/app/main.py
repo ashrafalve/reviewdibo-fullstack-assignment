@@ -24,8 +24,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Reviewdibo API",
+    description="A production-ready review platform for products. Supports user reviews, ratings, and product management.",
     version="1.0.0",
     lifespan=lifespan,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
 )
 
 app.add_middleware(
@@ -39,7 +43,7 @@ app.add_middleware(
 app.include_router(api_router, prefix="/api/v1")
 
 
-@app.get("/health")
+@app.get("/health", summary="Health check", description="Check if the API is running.")
 def health_check():
     return {"status": "ok"}
 

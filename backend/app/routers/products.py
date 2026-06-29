@@ -4,16 +4,30 @@ from app.database import get_db
 from app.services.product_service import ProductService
 from app.schemas.schemas import ProductResponse, ProductDetailResponse, ErrorResponse
 
-router = APIRouter()
+router = APIRouter(tags=["Products"])
 
 
-@router.get("/products", response_model=list[ProductResponse])
+@router.get(
+    "/products",
+    response_model=list[ProductResponse],
+    summary="List all products",
+    description="Retrieve all products with their average rating and total review count.",
+    response_description="A list of products.",
+    responses={404: {"model": ErrorResponse}},
+)
 def get_products(db: Session = Depends(get_db)):
     service = ProductService(db)
     return service.get_products()
 
 
-@router.get("/products/{product_id}", response_model=ProductDetailResponse, responses={404: {"model": ErrorResponse}})
+@router.get(
+    "/products/{product_id}",
+    response_model=ProductDetailResponse,
+    summary="Get product details",
+    description="Retrieve a product by ID including all associated reviews and reviewer names.",
+    response_description="Product details with reviews.",
+    responses={404: {"model": ErrorResponse}},
+)
 def get_product(product_id: int, db: Session = Depends(get_db)):
     service = ProductService(db)
     product = service.get_product_by_id(product_id)
