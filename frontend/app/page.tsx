@@ -13,7 +13,7 @@ async function getProducts(search?: string, minRating?: string) {
   if (search) params.set("search", search);
   if (minRating) params.set("min_rating", minRating);
   const url = params.toString() ? `${baseUrl}/products?${params.toString()}` : `${baseUrl}/products`;
-  const response = await fetch(url, { next: { revalidate: 60 } });
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
     throw new Error("Failed to load products");
   }

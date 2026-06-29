@@ -5,6 +5,12 @@ from app.models import Product
 
 
 def seed_products(db: Session):
+    existing = db.query(Product).count()
+    if existing > 0:
+        db.query(Product).delete()
+        db.commit()
+        print(f"Cleared {existing} existing products.")
+
     products = [
         {
             "title": "Wireless Noise-Cancelling Headphones",

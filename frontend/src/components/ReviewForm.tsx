@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "@/lib/api";
+import type { Review } from "@/types";
 
 interface ReviewFormInputs {
   user_name: string;
@@ -13,7 +14,7 @@ interface ReviewFormInputs {
 
 interface ReviewFormProps {
   productId: number;
-  onSuccess: () => void;
+  onSuccess: (review: Review) => void;
 }
 
 export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
@@ -45,7 +46,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
     setServerError(null);
     setSuccess(false);
     try {
-      await api.post("/reviews", {
+      const { data: review } = await api.post<Review>("/reviews", {
         user_name: data.user_name,
         user_email: data.user_email,
         product_id: productId,
@@ -54,7 +55,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
       });
       reset();
       setSuccess(true);
-      onSuccess();
+      onSuccess(review);
     } catch (err) {
       setServerError(err instanceof Error ? err.message : "Failed to submit review");
     } finally {

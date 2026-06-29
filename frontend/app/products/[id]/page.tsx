@@ -1,13 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ProductDetail } from "@/types";
-import { StarRating } from "@/components/StarRating";
-import { ReviewSection } from "./ReviewSection";
+import { ProductReviewPanel } from "./ProductReviewPanel";
 
 async function getProduct(id: string): Promise<ProductDetail | null> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
   try {
-    const response = await fetch(`${baseUrl}/products/${id}`, { next: { revalidate: 60 } });
+    const response = await fetch(`${baseUrl}/products/${id}`, { cache: "no-store" });
     if (!response.ok) return null;
     return response.json();
   } catch {
@@ -61,23 +60,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="p-6 sm:p-8">
           <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">{product.title}</h1>
           <p className="mt-3 text-sm leading-relaxed text-gray-500">{product.description}</p>
-          <div className="mt-5 flex items-center gap-4">
-            {product.average_rating !== null && product.average_rating > 0 ? (
-              <>
-                <StarRating rating={product.average_rating} />
-                <span className="text-sm font-medium text-gray-900">{product.average_rating.toFixed(1)}</span>
-              </>
-            ) : (
-              <span className="text-sm text-gray-400">No ratings yet</span>
-            )}
-            <span className="text-sm text-gray-400">{product.review_count} review{product.review_count === 1 ? '' : 's'}</span>
-          </div>
-        </div>
-      </div>
-      <div className="mt-10">
-        <h2 className="text-base font-semibold text-gray-900">Reviews</h2>
-        <div className="mt-5">
-          <ReviewSection productId={product.id} reviews={product.reviews} />
+          <ProductReviewPanel
+            productId={product.id}
+            initialReviews={product.reviews}
+            initialAverageRating={product.average_rating}
+            initialReviewCount={product.review_count}
+          />
         </div>
       </div>
     </div>
